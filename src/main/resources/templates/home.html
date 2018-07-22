@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>转换</title>
+</head>
+<body>
+<link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="/webjars/bootstrap/js/bootstrap.min.js"/>
+<script src="/webjars/jquery/jquery.min.js"></script>
+
+<style type="text/css">
+    #main {
+        height: 800px;
+        margin-top: 10px;
+    }
+
+    .p1, .panel {
+        height: 90%;
+        /*background-color:yellow;*/
+    }
+
+    .panel-heading {
+        width: 100%;
+    }
+
+    textarea {
+        height: 100%;
+        width: 100%
+    }
+
+    button {
+        margin-top: 100px;
+    }
+
+    .panel-body {
+        /*background-color:red;*/
+        height: 100%;
+        padding: 0px;
+    }
+</style>
+
+<script type="text/javascript">
+    function change() {
+        var aval = $("#apoint").val();
+        $("#bpoint").val("");
+        var data = {
+            points: aval
+        };
+
+        var postData = JSON.stringify(data);
+
+        $.ajax({
+            url: "pointChange",
+            data: postData,
+            dataType: 'json',
+            processData: false,
+            contentType: 'application/json;charset=utf-8',
+            type: "post",
+            success: function (resp) {
+                if (resp.code > 0) {
+                    $("#bpoint").val(resp.data);
+                } else {
+
+                    alert(resp.msg);
+                }
+
+            },
+            error: function (resp) {
+                alert(resp.status + " - " + resp.statusText);
+
+            }
+
+
+        });
+    }
+</script>
+
+
+<div id="main" class="row">
+    <div class="col-md-6 col-sm-6 p1">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="row">
+                    <h3 class="panel-title form-inline col-md-9">这边输入高德地图地址</h3>
+                    <div class="col-md-3 "><span class="btn btn-xs btn-success" onclick="change()">转换为百度坐标→&nbsp;→&nbsp;→</span>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body p1">
+                <textarea id="apoint" placeholder="格式：“精度,纬度”，如：
+117.000923,36.675807
+117.000923,36.675807
+117.000923,36.675807
+117.000923,36.675807
+                          "></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-sm-6 p1">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">这边是转换结果</h3>
+            </div>
+            <div class="panel-body">
+                <textarea id="bpoint" placeholder="结果：原来的经纬度 转换后的经纬度，可直接复制到Excel。如：
+117.000923   36.675807  117.00729904786879   36.682153187710678
+117.000923   36.675807  117.00729904786879   36.682153187710678
+117.000923   36.675807  117.00729904786879   36.682153187710678
+117.000923   36.675807  117.00729904786879   36.682153187710678"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
